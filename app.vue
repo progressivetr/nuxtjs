@@ -27,9 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-
-const { data: regions } = await useFetch('/api/database/regions')
+import {onMounted, ref} from "vue";
 
 const selectedRegion =  ref<string>("");
 const selectedOS =  ref<string>("");
@@ -37,6 +35,7 @@ const selectedSAP =  ref<string>("");
 const selectedGPU =  ref<string>("");
 const price = ref<string>("");
 
+const regions = ref<string[]>([]);
 const osList = ref<string[]>([]);
 const sapList = ref<string[]>([]);
 const gpuList = ref<string[]>([]);
@@ -91,4 +90,9 @@ async function updatePrice() {
   });
   price.value = data.value;
 }
+
+onMounted(async () => {
+  const { data } = await useFetch('/api/database/regions');
+  regions.value = data.value;
+})
 </script>
